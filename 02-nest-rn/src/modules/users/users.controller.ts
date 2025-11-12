@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Public } from '@/decorator/customize';
 
 @Controller('users')
 export class UsersController {
@@ -13,6 +14,7 @@ export class UsersController {
   }
 
   // Lấy danh sách user với filter / sort / pagination
+  @Public()
   @Get()
   async findAll(
     @Query() query: string,           // Toàn bộ query string (VD: { email: 'john', sort: '-createdAt' })
