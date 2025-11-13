@@ -1,11 +1,11 @@
-'use client'
 
+import AdminCard from '@/components/admin/admin.card';
 import React from 'react';
 
 const DashboardPage = () => {
     return (
         <div>
-            Dashboard page
+            <AdminCard />
         </div>
     );
 }
