@@ -4,9 +4,23 @@ import React from 'react';
 import { Button, Checkbox, Col, Divider, Form, Input, Row } from 'antd';
 import Link from 'next/link';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import { signIn } from 'next-auth/react';
+import { authenticate } from '@/utils/actions';
 
 const Login = () => {
-    const onFinish = async (values: any) => { };
+    const onFinish = async (values: any) => {
+
+        const { email, password } = values;
+
+        // trigger sign-in
+        const res = await authenticate(email, password)
+        console.log("Check: ", res);
+
+
+        // const data = await signIn("credentials", { email, password, redirect: false });
+        // console.log('>>> Check:', data);
+    };
+
     return (
         <Row justify={"center"} style={{ marginTop: "30px" }}>
             <Col xs={24} md={16} lg={8}>
