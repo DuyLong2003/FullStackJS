@@ -15,7 +15,7 @@ import { JwtStrategy } from './passport/jwt.strategy';
         global: true,
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: {
-          expiresIn: configService.get<string>('JWR_ACCESS_TOKEN_EXPIRED'),
+          expiresIn: configService.get<string>('JWT_ACCESS_TOKEN_EXPIRED'),
         },
       }),
       inject: [ConfigService],
