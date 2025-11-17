@@ -4,8 +4,12 @@ import { AdminContext } from "@/library/admin.context";
 import { DownOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SmileOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Layout, MenuProps, Space } from "antd";
 import { useContext } from "react";
+import { signOut } from "next-auth/react";
 
-const AdminHeader = () => {
+const AdminHeader = (prop: any) => {
+    // const { data: session, status } = useSession();
+    const { session } = prop;
+
     const { Header } = Layout;
     const { collapseMenu, setCollapseMenu } = useContext(AdminContext)!;
 
@@ -13,34 +17,15 @@ const AdminHeader = () => {
         {
             key: '1',
             label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                    1st menu item
-                </a>
+                <span>
+                    Setting
+                </span>
             ),
         },
         {
             key: '2',
-            label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                    2nd menu item (disabled)
-                </a>
-            ),
-            icon: <SmileOutlined />,
-            disabled: true,
-        },
-        {
-            key: '3',
-            label: (
-                <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                    3rd menu item (disabled)
-                </a>
-            ),
-            disabled: true,
-        },
-        {
-            key: '4',
             danger: true,
-            label: 'a danger item',
+            label: <span onClick={() => signOut()}>Đăng xuất</span>,
         },
     ];
 
@@ -70,7 +55,7 @@ const AdminHeader = () => {
                         style={{ color: "unset", lineHeight: "0 !important", marginRight: 20 }}
                     >
                         <Space>
-                            Welcome Admin
+                            Welcome {session?.user?.email ?? "Guest"}
                             <DownOutlined />
                         </Space>
                     </a>

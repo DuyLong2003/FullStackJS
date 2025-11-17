@@ -1,24 +1,40 @@
 'use client'
 
 import React from 'react';
-import { Button, Checkbox, Col, Divider, Form, Input, Row } from 'antd';
+import { Button, Checkbox, Col, Divider, Form, Input, notification, Row } from 'antd';
 import Link from 'next/link';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { signIn } from 'next-auth/react';
 import { authenticate } from '@/utils/actions';
+import { useRouter } from 'next/navigation';
+
 
 const Login = () => {
-    const onFinish = async (values: any) => {
+    const router = useRouter()
 
-        const { email, password } = values;
+    const onFinish = async (values: any) => {
+        const { username, password } = values;
 
         // trigger sign-in
-        const res = await authenticate(email, password)
-        console.log("Check: ", res);
-
-
-        // const data = await signIn("credentials", { email, password, redirect: false });
-        // console.log('>>> Check:', data);
+        const res = await authenticate(username, password);
+        console.log(res);
+        if (res?.error) {
+            //error
+            if (res?.error === "InactiveAccountError") {
+                router.push("/verify");
+                notification.error({
+                    message: "Tài khoản chưa được kích hoạt",
+                    description: res?.error
+                });
+            }
+            notification.error({
+                message: "Đăng nhập không thành công",
+                description: res?.error
+            });
+        }
+        else {
+            //redirect to /dashboard
+            router.push("/dashboard");
+        }
     };
 
     return (
@@ -39,11 +55,11 @@ const Login = () => {
                     >
                         <Form.Item
                             label="Email"
-                            name="email"
+                            name="username"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your username!'
+                                    message: 'Hãy nhập email của bạn!'
                                 }
                             ]}
                         >
@@ -56,7 +72,7 @@ const Login = () => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your password!',
+                                    message: 'Hãy nhập mật khẩu!',
                                 },
                             ]}
                         >
